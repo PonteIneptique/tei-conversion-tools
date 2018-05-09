@@ -5,11 +5,26 @@
     exclude-result-prefixes="xs"
     version="2.0">
     
-    <xsl:template match="tei:l">
-        <xsl:variable name="container" select="ancestor::tei:div[@subtype='poem']" />
-        <xsl:variable name="seq" select="$container//tei:l" />
+    <xsl:param name="container_type" select="'poem'" />
+    <xsl:param name="renumber_div" select="false()" />
+    
+    <xsl:template match="*:l">
+        <xsl:variable name="container" select="ancestor::*:div[@subtype=$container_type]" />
+        <xsl:variable name="seq" select="$container//*:l" />
         <xsl:copy>
             <xsl:attribute name="n" select="index-of($seq, current())"/>
+            <xsl:apply-templates  select="node()|comment()"/>
+        </xsl:copy>
+    </xsl:template>
+    
+    <xsl:template match="*:div">
+        <xsl:variable name="container" select="ancestor::*:div[@subtype=$container_type]" />
+        <xsl:copy>
+            <xsl:apply-templates  select="@*"/>
+            <xsl:if test="$renumber_div">
+                <xsl:variable name="seq" select="$container//*:div" />
+                <xsl:attribute name="n" select="index-of($seq, current())"/>
+            </xsl:if>
             <xsl:apply-templates  select="node()|comment()"/>
         </xsl:copy>
     </xsl:template>

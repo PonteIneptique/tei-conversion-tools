@@ -41,6 +41,7 @@
         <xsl:message><xsl:value-of select="not(./@n = 'NaN') or not(./@n = '')"/></xsl:message>
         <xsl:message><xsl:copy-of select="$prev" /></xsl:message>
         <xsl:copy>
+            <xsl:copy-of select="./@*"/>
             <xsl:choose>
                 <xsl:when test="@n and not(./@n = 'NaN' or ./@n = '')">
                     <xsl:attribute name="n" select="./@n"/>
@@ -69,7 +70,7 @@
     </xsl:template>
     
     
-    <xsl:template name="poemloop" match="*:div1[@type='poem' and count(.//*:l[not(@n) or (@n = 'NaN') or (@n = '')])]" saxon:threads="8">
+    <xsl:template name="poemloop" match="*:div2[@type='poem' and count(.//*:l[not(@n) or (@n = 'NaN') or (@n = '')])]" saxon:threads="8">
         <xsl:call-template name="loop">
             <xsl:with-param name="doc" select="." />
         </xsl:call-template>

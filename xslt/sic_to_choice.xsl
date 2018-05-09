@@ -8,7 +8,7 @@
     <xsl:template match="@*">
         <xsl:copy/>
     </xsl:template>
-    <xsl:template match="tei:corr">
+    <xsl:template match="tei:corr[@sic]">
         <xsl:element name="choice" namespace="http://www.tei-c.org/ns/1.0">
             <xsl:element name="sic" namespace="http://www.tei-c.org/ns/1.0">
                 <xsl:value-of select="./@sic"/>
